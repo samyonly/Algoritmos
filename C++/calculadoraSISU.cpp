@@ -22,7 +22,6 @@
 
 #include <iostream>
 #include <string>
-#include <locale>
 using namespace std;
 
 //Estrutura com os atributos de uma prova
