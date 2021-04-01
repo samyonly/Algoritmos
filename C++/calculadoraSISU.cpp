@@ -22,19 +22,33 @@
 
 #include <iostream>
 #include <string>
-#include <stdio.h>
+#include <locale>
 using namespace std;
 
+//Estrutura com os atributos de uma prova
+struct Prova{
+    string nome;
+    float nota;
+    float peso;
+};
+
 int main(int argc, char **argv) {
+          
+    //Prototipação de funções e procedimentos
+    float leiaVetor(Prova nome[5], string cabecalho, string valor);
+    float mediaPonderada(Prova nome[5], float somaPesos);
     
     //Declaração de variáveis
     int menu;
-    float pesos[5], nota[5], somaPesos = 0.0;
-    string provas[5] = {"Redacao", "Matematica", "Linguagens", "Humanas", "Natureza"};
+    float somaPesos = 0.0;
+    Prova enem[5];
     
-    //Prototipação de funções e procedimentos
-    float leiaVetor(float valor[5], string provas[5], string cabecalho, string nomeValor);
-    float mediaPonderada(float nota[5], float peso[5], float somaPesos);
+    //Atribuição dos nomes das provas
+    enem[0].nome = "Redacao";
+    enem[1].nome = "Matematica";
+    enem[2].nome = "Linguagens";
+    enem[3].nome = "Humanas";
+    enem[4].nome = "Natureza";
     
     do{
         system("cls");
@@ -58,15 +72,15 @@ int main(int argc, char **argv) {
         switch(menu){
             case 1:
                 // 1. Cadastrar notas
-                leiaVetor(nota, provas, "Cadastrar Notas", "nota");
+                leiaVetor(enem, "Cadastrar Notas", "nota");
                 break;
             case 2:
                 // 2. Cadastrar pesos
-                somaPesos = leiaVetor(pesos, provas, "Cadastrar Pesos", "peso");
+                somaPesos = leiaVetor(enem, "Cadastrar Pesos", "peso");
                 break;
             case 3:
                 // 3. Ver média
-                cout << "Sua media ponderada eh igual a " << mediaPonderada(nota, pesos, somaPesos) << endl << endl;
+                cout << "Sua media ponderada equivale a " << mediaPonderada(enem, somaPesos) << endl << endl;
                 getchar();
                 break;
             case 0:
@@ -87,7 +101,7 @@ int main(int argc, char **argv) {
 }
 
 //Função para preencher um vetor de 5 espaços e retorna seus valores somados
-float leiaVetor(float valor[5], string provas[5], string cabecalho, string nomeValor){
+float leiaVetor(Prova nome[5], string cabecalho, string valor){
     
     float soma;
     
@@ -97,21 +111,28 @@ float leiaVetor(float valor[5], string provas[5], string cabecalho, string nomeV
     cout << cabecalho << endl << endl;
     
     for(int i = 0; i < 5; i++){
-            cout << "Digite o " << nomeValor << " de " << provas[i] << ": ";
-            cin >> valor[i];
-            setbuf(stdin, NULL);
-            soma += valor[i];
+            cout << "Digite o " << valor << " de " << nome[i].nome << ": ";
+            if(valor == "nota"){
+                cin >> nome[i].nota;
+                setbuf(stdin, NULL);
+                soma = 0;
+            }
+            else if(valor == "peso"){
+                cin >> nome[i].peso;
+                setbuf(stdin, NULL);
+                soma += nome[i].peso;
+            }
         }
     return soma;
 }
 
 //Função para calcular a média ponderada
-float mediaPonderada(float nota[5], float peso[5], float somaPesos){
+float mediaPonderada(Prova nome[5], float somaPesos){
     
     float media;
     
     for(int i = 0; i < 5; i++){
-        media += nota[i] * peso[i];
+        media += nome[i].nota * nome[i].peso;
     }
     
     return media/somaPesos;
